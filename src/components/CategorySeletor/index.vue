@@ -1,7 +1,7 @@
 <template>
   <el-form :inline="true" class="demo-form-inline">
     <el-form-item label="一级分类">
-      <el-select placeholder="请选择" v-model="categoryForm.category1Id" @change="handleCategory1">
+      <el-select placeholder="请选择" v-model="categoryForm.category1Id" @change="handleCategory1" :disabled="show">
         <el-option
           v-for="item in list1"
           :key="item.id"
@@ -12,13 +12,13 @@
     </el-form-item>
 
     <el-form-item label="二级分类">
-      <el-select placeholder="请选择" v-model="categoryForm.category2Id" @change="handleCategory2">
+      <el-select placeholder="请选择" v-model="categoryForm.category2Id" @change="handleCategory2" :disabled="show">
         <el-option v-for="item in list2" :key="item.id" :label="item.name" :value="item.id"></el-option>
       </el-select>
     </el-form-item>
 
     <el-form-item label="三级分类">
-       <el-select placeholder="请选择" v-model="categoryForm.category3Id" @change="handleAttr">
+       <el-select placeholder="请选择" v-model="categoryForm.category3Id" @change="handleAttr" :disabled="show">
         <el-option v-for="item in list3" :key="item.id" :label="item.name" :value="item.id"></el-option>
       </el-select>
     </el-form-item>
@@ -44,6 +44,7 @@ export default {
       },
     };
   },
+  props: ['show'],
   computed: {},
   mounted() {
     this.getCategory1();
@@ -63,6 +64,7 @@ export default {
       this.list3 = [];
       this.categoryForm.category2Id = '';
       this.categoryForm.category3Id = '';
+
       const {category1Id} = this.categoryForm;
       let res = await this.$API.attr.reqCategory2List(category1Id);
        if (res.code === 200) {
@@ -75,6 +77,7 @@ export default {
       // 二级分类发生变化时，置空三级分类
       this.list3 = [];
       this.categoryForm.category3Id = '';
+
       const {category2Id} = this.categoryForm;
       let res = await this.$API.attr.reqCategory3List(category2Id);
        if (res.code === 200) {
@@ -83,7 +86,7 @@ export default {
     },
 
     handleAttr() {
-      console.log('good...');
+      this.$emit('cusGetCategoryId', this.categoryForm)
     },
 
     onSubmit() {
