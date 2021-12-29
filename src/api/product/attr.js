@@ -40,3 +40,12 @@ export const reqAddAttrInfo = data => {
     data
   })
 }
+
+// 删除属性
+
+export const reqDeleteAttr = attrId => {
+  return request({
+    url: `/admin/product/deleteAttr/${attrId}`,
+    method: 'delete',
+  })
+}

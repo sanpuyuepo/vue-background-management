@@ -40,7 +40,7 @@
                 @click="updateAttr(row)"
                 >编辑</el-button
               >
-              <el-button type="danger" size="small" icon="el-icon-delete"
+              <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteAttr(row)"
                 >删除</el-button
               >
             </template>
@@ -125,6 +125,7 @@ export default {
       showTable: true,
       // 添加属性按钮禁用
       isDisabled: true,
+      categoryIds: {},
       attrForm: {
         attrName: "",
         attrValueList: [],
@@ -167,6 +168,7 @@ export default {
     },
     async getAttrInfoList(ids) {
       const { category1Id, category2Id, category3Id } = ids;
+      this.categoryIds = ids;
       this.attrForm.categoryId = category3Id;
       this.isDisabled = false;
       let res = await this.$API.attr.reqAttrInfoList(
@@ -208,7 +210,20 @@ export default {
       this.attrForm = cloneDeep(row);
     },
     // 删除属性
-    deleteAttr(row) {},
+    async deleteAttr(row) {
+      console.log(row);
+      try {
+        await this.$API.attr.reqDeleteAttr(row.id)
+        this.$message({
+          type: 'success',
+          message: '删除成功',
+        });
+        this.getAttrInfoList(this.categoryIds);
+      } catch (error) {
+        
+      }
+
+    },
     // 保存属性信息
     async save() {
       this.attrForm.attrValueList.filter((item) => {
@@ -223,8 +238,8 @@ export default {
           type: "success",
           message: "保存成功",
         });
+        this.getAttrInfoList(this.categoryIds);
         this.showTable = true;
-        this.getAttrInfoList();
       } catch (error) {}
     },
     // 取消
