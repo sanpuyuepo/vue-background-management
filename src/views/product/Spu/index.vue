@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-card style="margin: 20px 0">
-      <CategorySelector @cusGetCategoryId="getCategoryIds" :unavailable="scene !== 0"></CategorySelector>
+      <CategorySelector
+        @cusGetCategoryId="getCategoryIds"
+        :unavailable="scene !== 0"
+      ></CategorySelector>
     </el-card>
 
     <el-card style="margin: 20px 0">
@@ -18,11 +21,11 @@
         <el-table :data="tableData.records" border style="width: 100%">
           <el-table-column type="index" label="序号" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="spuName" label="SPU名称" width="width">
+          <el-table-column prop="spuName" label="SPU名称" width="240">
           </el-table-column>
           <el-table-column prop="description" label="SPU描述" width="width">
           </el-table-column>
-          <el-table-column prop="prop" label="操作" width="width">
+          <el-table-column prop="prop" label="操作" width="240">
             <template v-slot="{ row }">
               <el-button
                 type="success"
@@ -43,12 +46,20 @@
                 icon="el-icon-info"
                 title="查看当前spu的全部sku"
               ></el-button>
-              <el-button
-                type="danger"
-                size="small"
-                icon="el-icon-delete"
-                title="删除spu"
-              ></el-button>
+              <el-popconfirm
+                :title="`确定删除${row.spuName}吗？`"
+                @onConfirm="deleteSpu(row)"
+              >
+                <el-button
+                  style="margin-left: 10px"
+                  type="danger"
+                  size="small"
+                  icon="el-icon-delete"
+                  title="删除spu"
+                  slot="reference"
+                >
+                </el-button>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -66,7 +77,12 @@
         >
         </el-pagination>
       </div>
-      <SpuForm v-show="scene === 1" ref="spu" @changeScene="changeScene" :categoryIds="categoryIds"></SpuForm>
+      <SpuForm
+        v-show="scene === 1"
+        ref="spu"
+        @changeScene="changeScene"
+        :categoryIds="categoryIds"
+      ></SpuForm>
       <SkuForm v-show="scene === 2"></SkuForm>
     </el-card>
   </div>
@@ -129,6 +145,17 @@ export default {
     update(row) {
       this.scene = 1;
       this.$refs.spu.initSpuData(row);
+    },
+    // 删除Spu
+    async deleteSpu(row) {
+      let res = await this.$API.spu.reqDeleteSpu(row.id);
+      if (res.code === 200) {
+        this.$message({
+          type: "success",
+          message: "删除成功",
+        });
+        this.getSpuList();
+      }
     },
 
     // 分页回调

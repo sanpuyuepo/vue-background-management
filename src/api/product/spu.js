@@ -5,41 +5,41 @@ export const reqSpuList = (page, limit, category3Id) => {
   return request({
     url: `/admin/product/${page}/${limit}`,
     method: "get",
-    params: {category3Id}
+    params: { category3Id },
   });
 };
-// ============================= SpuForm reqs start ======================================= 
-export const reqSpuInfo = spuId => {
+// ============================= SpuForm reqs start =======================================
+export const reqSpuInfo = (spuId) => {
   return request({
     url: `/admin/product/getSpuById/${spuId}`,
-    method: 'get'
-  })
-}
+    method: "get",
+  });
+};
 
 export const reqTrademarkList = () => {
   return request({
     url: `/admin/product/baseTrademark/getTrademarkList`,
-    method: 'get'
-  })
-}
+    method: "get",
+  });
+};
 
 export const reqBaseSaleAttrList = () => {
   return request({
     url: `/admin/product/baseSaleAttrList`,
-    method: 'get'
-  })
-}
+    method: "get",
+  });
+};
 
-export const reqSpuImageList = spuId => {
+export const reqSpuImageList = (spuId) => {
   return request({
     url: `/admin/product/spuImageList/${spuId}`,
-    method: 'get'
-  })
-}
-
+    method: "get",
+  });
+};
+// =============================== SpuForm reqs start =====================================
 
 // 添加SPU
-export const reqSaveSpuInfo = data => {
+export const reqSaveSpuInfo = (data) => {
   return request({
     url: `/admin/product/saveSpuInfo`,
     method: "post",
@@ -48,19 +48,18 @@ export const reqSaveSpuInfo = data => {
 };
 
 // 修改SPU
-export const reqUpdateSpuInfo = data => {
+export const reqUpdateSpuInfo = (data) => {
   return request({
     url: `/admin/product/updateSpuInfo`,
     method: "post",
     data,
   });
 };
-// =============================== SpuForm reqs start =====================================
 
-// 删除属性
-export const reqDeleteAttr = (attrId) => {
+// 删除SPU
+export const reqDeleteSpu = (spuId) => {
   return request({
-    url: `/admin/product/deleteAttr/${attrId}`,
+    url: `/admin/product/deleteSpu/${spuId}`,
     method: "delete",
   });
 };
