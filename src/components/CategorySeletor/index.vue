@@ -1,7 +1,7 @@
 <template>
   <el-form :inline="true" class="demo-form-inline">
     <el-form-item label="一级分类">
-      <el-select placeholder="请选择" v-model="categoryForm.category1Id" @change="handleCategory1" :disabled="show">
+      <el-select placeholder="请选择" v-model="categoryForm.category1Id" @change="handleCategory1" :disabled="unavailable">
         <el-option
           v-for="item in list1"
           :key="item.id"
@@ -12,13 +12,13 @@
     </el-form-item>
 
     <el-form-item label="二级分类">
-      <el-select placeholder="请选择" v-model="categoryForm.category2Id" @change="handleCategory2" :disabled="show">
+      <el-select placeholder="请选择" v-model="categoryForm.category2Id" @change="handleCategory2" :disabled="unavailable">
         <el-option v-for="item in list2" :key="item.id" :label="item.name" :value="item.id"></el-option>
       </el-select>
     </el-form-item>
 
     <el-form-item label="三级分类">
-       <el-select placeholder="请选择" v-model="categoryForm.category3Id" @change="handleAttr" :disabled="show">
+       <el-select placeholder="请选择" v-model="categoryForm.category3Id" @change="handleAttr" :disabled="unavailable">
         <el-option v-for="item in list3" :key="item.id" :label="item.name" :value="item.id"></el-option>
       </el-select>
     </el-form-item>
@@ -44,7 +44,7 @@ export default {
       },
     };
   },
-  props: ['show'],
+  props: ['unavailable'],
   computed: {},
   mounted() {
     this.getCategory1();
@@ -52,7 +52,7 @@ export default {
   methods: {
     // 获取一级分类
     async getCategory1() {
-      let res = await this.$API.attr.reqCategory1List();
+      let res = await this.$API.reqCategory1List();
       if (res.code === 200) {
         this.list1 = res.data;
       }
@@ -66,7 +66,7 @@ export default {
       this.categoryForm.category3Id = '';
 
       const {category1Id} = this.categoryForm;
-      let res = await this.$API.attr.reqCategory2List(category1Id);
+      let res = await this.$API.reqCategory2List(category1Id);
        if (res.code === 200) {
         this.list2 = res.data;
       }
@@ -79,7 +79,7 @@ export default {
       this.categoryForm.category3Id = '';
 
       const {category2Id} = this.categoryForm;
-      let res = await this.$API.attr.reqCategory3List(category2Id);
+      let res = await this.$API.reqCategory3List(category2Id);
        if (res.code === 200) {
         this.list3 = res.data;
       }

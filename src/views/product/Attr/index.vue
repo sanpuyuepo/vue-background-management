@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card style="margin: 20px 0">
-      <CategorySelector @cusGetCategoryId="getAttrInfoList" :show="!showTable"></CategorySelector>
+      <CategorySelector @cusGetCategoryId="getAttrInfoList" :unavailable="!showTable"></CategorySelector>
     </el-card>
 
     <el-card style="margin: 20px 0">
