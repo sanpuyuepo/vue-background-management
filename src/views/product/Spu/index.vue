@@ -32,6 +32,7 @@
                 size="small"
                 icon="el-icon-plus"
                 title="添加sku"
+                @click="addSku(row)"
               ></el-button>
               <el-button
                 type="warning"
@@ -83,7 +84,7 @@
         @changeScene="changeScene"
         :categoryIds="categoryIds"
       ></SpuForm>
-      <SkuForm v-show="scene === 2"></SkuForm>
+      <SkuForm v-show="scene === 2" @changeScene="changeScene"></SkuForm>
     </el-card>
   </div>
 </template>
@@ -156,6 +157,11 @@ export default {
         });
         this.getSpuList();
       }
+    },
+    // 添加sku
+    addSku(row) {
+      this.scene = 2;
+      console.log('add Sku', row);
     },
 
     // 分页回调
