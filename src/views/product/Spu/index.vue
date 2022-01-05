@@ -84,7 +84,7 @@
         @changeScene="changeScene"
         :categoryIds="categoryIds"
       ></SpuForm>
-      <SkuForm v-show="scene === 2" @changeScene="changeScene"></SkuForm>
+      <SkuForm ref="sku" v-show="scene === 2" @changeScene="changeScene" ></SkuForm>
     </el-card>
   </div>
 </template>
@@ -161,7 +161,7 @@ export default {
     // 添加sku
     addSku(row) {
       this.scene = 2;
-      console.log('add Sku', row);
+      this.$refs.sku.getData(row, this.categoryIds);
     },
 
     // 分页回调
