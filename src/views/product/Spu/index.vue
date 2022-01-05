@@ -46,6 +46,7 @@
                 size="small"
                 icon="el-icon-info"
                 title="查看当前spu的全部sku"
+                @click="checkAllSku(row)"
               ></el-button>
               <el-popconfirm
                 :title="`确定删除${row.spuName}吗？`"
@@ -84,7 +85,44 @@
         @changeScene="changeScene"
         :categoryIds="categoryIds"
       ></SpuForm>
-      <SkuForm ref="sku" v-show="scene === 2" @changeScene="changeScene" ></SkuForm>
+      <SkuForm
+        ref="sku"
+        v-show="scene === 2"
+        @changeScene="changeScene"
+      ></SkuForm>
+      <el-dialog :title="spu.spuName" :visible.sync="dialogTableVisible" :before-close="handleClose">
+        <el-table :data="skuList" border v-loading="loading">
+          <el-table-column
+            property="skuName"
+            label="名称"
+            width="width"
+          ></el-table-column>
+          <el-table-column
+            property="price"
+            label="价格"
+            width="200"
+          ></el-table-column>
+           <el-table-column
+            property="weight"
+            label="重量"
+            width="200"
+          ></el-table-column>
+           <el-table-column
+            property="skuDefaultImg"
+            label="默认图片"
+            width="200"
+          >
+          <template v-slot="{row}">
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="row.skuDefaultImg"
+              fit="fill"
+              :preview-src-list="[row.skuDefaultImg]"
+            ></el-image>
+          </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -105,6 +143,11 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
+      //
+      dialogTableVisible: false,
+      spu: {},
+      skuList: [],
+      loading: true,
     };
   },
   components: {
@@ -162,6 +205,21 @@ export default {
     addSku(row) {
       this.scene = 2;
       this.$refs.sku.getData(row, this.categoryIds);
+    },
+    // 获取 Sku 列表
+    async checkAllSku(row) {
+      this.dialogTableVisible = true;
+      this.spu = row;
+      let res = await this.$API.spu.reqSkuListBySpuId(row.id);
+      if (res.code === 200) {
+        this.skuList = res.data;
+        this.loading = false;
+      }
+    },
+    handleClose(done) {
+      this.loading = true;
+      this.skuList = [];
+      done();
     },
 
     // 分页回调

@@ -63,3 +63,11 @@ export const reqDeleteSpu = (spuId) => {
     method: "delete",
   });
 };
+
+// 获取spu下的sku列表
+export const reqSkuListBySpuId = spuId => {
+  return request({
+    url: `/admin/product/findBySpuId/${spuId}`,
+    method: "get",
+  })
+}
