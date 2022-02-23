@@ -6,6 +6,10 @@ import * as sku from './product/sku'
 
 import request from '@/utils/request'
 
+import * as user from './acl/user';
+import role from './acl/role'
+import permission from './acl/permission' 
+
 // 一级分类
 const reqCategory1List = () => {
   return request({
@@ -37,5 +41,8 @@ export default {
   trademark,
   attr,
   spu,
-  sku
+  sku, 
+  user, 
+  role, 
+  permission,
 }

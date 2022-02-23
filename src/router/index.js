@@ -55,6 +55,47 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/acl',
+    name: 'Acl',
+    component: Layout,
+    meta: { title: '权限管理', icon: 'el-icon-lock'},
+    children: [
+      {
+        name: 'User',
+        path: 'user/list',
+        component: () => import('@/views/acl/user/list'),
+        meta: {
+          title: '用户管理'
+        },
+      },
+      {
+        name: 'Role',
+        path: 'role/list',
+        component: () => import('@/views/acl/role/list'),
+        meta: {
+          title: '角色管理',
+        },
+      },
+      {
+        name: 'RoleAuth',
+        path: 'role/auth:id',
+        component: () => import('@/views/acl/role/roleAuth'),
+        meta: {
+          title: '角色授权',
+          activeMenu: '/acl/role/list'
+        },
+        hidden: true,
+      },
+      {
+        path: 'permission/list',
+        name: 'Permission',
+        component: () => import('@/views/acl/permission/list'),
+        meta: { title: '菜单管理' },
+      },
+      
+    ]
+  },
+  {
     path: '/product',
     name: 'Product',
     component: Layout,
